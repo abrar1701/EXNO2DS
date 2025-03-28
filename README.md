@@ -24,105 +24,119 @@ STEP 7: Use cross tabulation method to quantitatively analyze the relationship b
 STEP 8: Use heatmap method of representation to show relationships between two variables, one plotted on each axis.
 
 ## CODING AND OUTPUT
-# Developed By: YUVAN SUNDAR S
-# REGISTER  NO: 212223040250
+# Developed By: MOHAMED ABRAR M
+# REGISTER  NO: 212223040111
 ```py
-import numpy as np
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-df=pd.read_csv("/content/titanic_dataset.csv")
-df
+from google.colab import drive
+
+drive.mount('/content/drive')
 ```
-![image](https://github.com/user-attachments/assets/9df3b6ee-cde2-471b-853f-757c6084c1f4)
+![image](https://github.com/user-attachments/assets/d452575d-c289-449e-a322-6396274a9c49)
 ```py
-df.info()
+ls 'drive/MyDrive/Colab Notebooks'
 ```
-![image](https://github.com/user-attachments/assets/79123962-b784-42d5-b436-754268388e9c)
+![image](https://github.com/user-attachments/assets/eec2ef52-543c-4320-bf13-436dad2d3a28)
 ```py
-df.shape
+dt=pd.read_csv("drive/MyDrive/Colab Notebooks/titanic_dataset.csv")
+dt
 ```
-![image](https://github.com/user-attachments/assets/40d7e572-65b0-4fb6-9e45-1240f88bafc9)
+![image](https://github.com/user-attachments/assets/a0602d70-aa10-4c1a-a9a4-d237c80a5b39)
 ```py
-df.describe()
+dt.info()
 ```
-![image](https://github.com/user-attachments/assets/efdd96e6-928c-435f-9045-3bc1c1837fcc)
+![image](https://github.com/user-attachments/assets/34567522-0bf6-411f-bd2e-166c5305f116)
+## DISPLAY NO OF ROWS AND COLUMNS
 ```py
-df.shape
+print(f"Number of rows = {dt.shape[0]}")
+print(f"Number of columns = {dt.shape[1]}")
 ```
-![image](https://github.com/user-attachments/assets/f06ec038-64c5-49bf-b018-1e358629a2ac)
+![image](https://github.com/user-attachments/assets/d99c1a9b-4140-43db-a7d9-24b9dcfda152)
+## SET PASSENGER ID AS INDEX COLUMN
 ```py
-df.nunique()
+dt.set_index('PassengerId', inplace=True)
+dt
 ```
-![image](https://github.com/user-attachments/assets/1e51651f-6336-4f9b-a298-ee6d8334f038)
+![image](https://github.com/user-attachments/assets/badaeab5-4b83-4281-96e6-62ff89a04f88)
 ```py
-df["Survived"].value_counts()
+dt.describe()
 ```
-![image](https://github.com/user-attachments/assets/2c991851-4d1a-4bf9-8a97-fd1ed33d6c4a)
+![image](https://github.com/user-attachments/assets/922af2a3-f17d-482f-b9ea-c44cbb3f37bb)
+# CATEGORICAL DATA ANALYSIS
+## USE VALUE COUNT FUNCTION AND PERFROM CATEGORICAL ANALYSIS
 ```py
-per=(df["Survived"].value_counts()/df.shape[0]*100).round(2)
+dt["Survived"].value_counts()
+```
+![image](https://github.com/user-attachments/assets/abe96b7c-1978-4426-8a11-4d1ce1b8041e)
+```py
+per = ((dt["Survived"].value_counts())/dt.shape[0]*100).round(2)
 per
 ```
-![image](https://github.com/user-attachments/assets/bebac8b7-01e9-464d-bbae-a983d8c3c469)
+![image](https://github.com/user-attachments/assets/ef42df9f-d34d-4de2-a0a6-2d14cb9d6d92)
+# UNIVARIATE ANALYSIS
+## USE COUNTPLOT AND PERFORM UNIVARIATE ANALYSIS FOR THE "SURVIVED" COLUMN IN TITANIC DATASET
 ```py
-sns.countplot(x="Survived",data=df)
+sns.countplot(data=dt,x="Survived")
 ```
-![image](https://github.com/user-attachments/assets/b7b83a3d-3b64-4939-ad4f-99def1ce476e)
+![image](https://github.com/user-attachments/assets/bd5b0f36-7128-4e12-88f3-c78b6f7f46ec)
+## IDENTIFY UNIQUE VALUES IN "PASSENGER CLASS" COLUMN
 ```py
-df
+dt.Pclass.unique()
 ```
-![image](https://github.com/user-attachments/assets/779eb9b5-2a7a-420a-a2dd-dfc55c59a05a)
+![image](https://github.com/user-attachments/assets/6b8ba472-af0f-408f-91bc-5faad65baf06)
+
+## RENAMING COLUMN
 ```py
-df.Pclass.unique()
+dt.rename(columns = {'Sex':'Gender'}, inplace = True)
+dt
 ```
-![image](https://github.com/user-attachments/assets/282eee5e-dce4-4d26-843c-5964a2ecb85c)
+![image](https://github.com/user-attachments/assets/7b528339-afa6-41ae-b53f-39f0cc4845c5)
+
+# BIVARIATE ANALYSIS
+## USE CATPLOT METHOD FOR BIVARIATE ANALYSIS
 ```py
-df.rename(columns={'Sex':'Gender'},inplace=True)
-df
+sns.catplot(x="Gender", col="Survived", kind="count", data=dt, height=5, aspect=0.7, palette="coolwarm")
 ```
-![image](https://github.com/user-attachments/assets/f02bda5c-c96d-41e7-82fa-878fc083cf07)
-# Bivariate Analysis
+![image](https://github.com/user-attachments/assets/fc61f999-599d-45f0-8780-b5b4187c764f)
 ```py
- sns.catplot(x="Gender",col="Survived",kind="count",data=df,height=5,aspect=.7)
+ sns.catplot(x="Survived",hue="Gender",data=dt,kind="count")
 ```
-![image](https://github.com/user-attachments/assets/eb125a7d-0442-4a2c-9c60-6bfedd5d5326)
-```py
- sns.catplot(x="Survived",hue="Gender",data=df,kind="count")
-```
-![image](https://github.com/user-attachments/assets/b093977b-4709-4f98-b540-8e130f8eb11a)
-```py
-df.boxplot(column="Age",by="Survived")
-```
-![image](https://github.com/user-attachments/assets/11f1657f-a10d-4865-b0cf-cc12b60ba0d4)
-```py
-sns.scatterplot(x=df["Age"],y=df["Fare"])
-```
-![image](https://github.com/user-attachments/assets/8d695780-ed5e-4497-aaba-113618c41086)
-```py
-sns.jointplot(x="Age",y="Fare",data=df)
-```
-![image](https://github.com/user-attachments/assets/f529f34c-d577-4a9a-b9cd-675b52d5deaf)
-#  Multivariate Analysis
+![image](https://github.com/user-attachments/assets/803bd17c-2572-42d5-a53c-e3465e523952)
 ```py
 fig, ax1 = plt.subplots(figsize=(8,5))
-sns.boxplot(ax=ax1,x='Pclass',y='Age',hue='Gender',data=df)
+graph = sns.countplot(data=dt, x="Survived", palette='coolwarm')
+graph.set_xticklabels(graph.get_xticklabels())
+for p in graph.patches:
+    height = p.get_height()
+    graph.text(p.get_x()+p.get_width()/2, height + 20.8,height ,ha="left")
 ```
-![image](https://github.com/user-attachments/assets/f965001f-7193-4399-823c-69751bde4027)
+![image](https://github.com/user-attachments/assets/444dc3a9-32c1-4f24-b49d-f26d6bfe7e46)
+## USE BOXPLOT METHOD TO ANALYZE AGE AND SURVIVED COLUMN
 ```py
- sns.catplot(data=df,col="Survived",x="Gender",hue="Pclass",kind="count")
+dt.boxplot(column="Age",by="Survived")
 ```
-![image](https://github.com/user-attachments/assets/27b36b0e-b86f-4d7e-bc82-104c8af5ab19)
-# Co-Relation
+![image](https://github.com/user-attachments/assets/ea69de29-24b6-4833-8530-d6ab3fb5a20d)
+# MULTIVARIATE ANALYSIS
+## USE BOXPLOT METHOD AND ANALYZE THREE COLUMNS(PCLASS,AGE,GENDER)
 ```py
-numeric_df = df.select_dtypes(include=np.number)
+plt.figure(figsize=(8,6))
+sns.boxplot(x="Pclass", y="Age", hue="Gender", data=dt, palette="coolwarm")
+```
+![image](https://github.com/user-attachments/assets/044a5714-852a-410e-b78f-f9d1938df7d6)
+## USE CATPLOT METHOD AND ANALYZE THREE COLUMNS(PCLASS,SURVIVED,GENDER)
+```py
+sns.catplot(x="Pclass", hue="Survived", col="Gender", data=dt, kind="count", palette="coolwarm", height=5, aspect=0.8)
+```
+![image](https://github.com/user-attachments/assets/066fe2c5-ba99-45c0-bac5-f324b90455d5)
+## IMPLEMENT HEATMAP AND PAIRPLOT FOR THE DATASET
+```py
+numeric_df = dt.select_dtypes(include=np.number)
 corr_matrix = numeric_df.corr()
 sns.heatmap(corr_matrix, annot=True)
 ```
-![image](https://github.com/user-attachments/assets/12b79584-a05c-4774-be87-4840505024ff)
-```py
-sns.pairplot(df)
-```
-![image](https://github.com/user-attachments/assets/2ea67bc7-8ca1-4beb-b539-16fd628101d1)
-
+![image](https://github.com/user-attachments/assets/d216d1f7-c894-4b1d-bb2b-827e5f5daac0)
 # RESULT
 We have performed Exploratory Data Analysis on the given data set successfully.
